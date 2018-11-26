@@ -174,7 +174,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 12c541b63dd6c5146b61770a00d781ef, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 434a14c64bf3146408c804c66d5ff052, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -300,10 +300,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AssetsPPU: 8
-  m_RefResolutionX: 1280
-  m_RefResolutionY: 720
+  m_RefResolutionX: 128
+  m_RefResolutionY: 128
   m_UpscaleRT: 0
   m_PixelSnapping: 1
-  m_CropFrameX: 0
-  m_CropFrameY: 0
+  m_CropFrameX: 1
+  m_CropFrameY: 1
   m_StretchFill: 0

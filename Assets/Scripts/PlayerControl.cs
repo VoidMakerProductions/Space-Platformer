@@ -220,7 +220,7 @@ public class PlayerControl : NetworkBehaviour {
         }
         if (CrossPlatformInputManager.GetButtonDown("Fire3")) {
             if (interactable != null) {
-                interactable.Interact();
+                Cmd_Interact();
             }
         }
 
@@ -271,6 +271,10 @@ public class PlayerControl : NetworkBehaviour {
         NetworkServer.Spawn(go);
         go.GetComponent<Rigidbody2D>().AddForce(v);
     }
-        
+
+    [Command]
+    void Cmd_Interact() {
+        interactable.Interact();
+    }
 
 }

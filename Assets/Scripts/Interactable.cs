@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 public abstract class Interactable : NetworkBehaviour
 {
     public Animator animator;
-    int players_inside = 0;
+    protected int players_inside = 0;
     public abstract void Interact();
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
@@ -28,7 +28,7 @@ public abstract class Interactable : NetworkBehaviour
             if (players_inside == 0) {
                 if (animator)
                 {
-                    animator.SetBool("active", true);
+                    animator.SetBool("active", false);
                 }
             }
             

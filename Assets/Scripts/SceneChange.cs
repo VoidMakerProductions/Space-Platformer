@@ -1,27 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
 public class SceneChange : Interactable
 {
+    public string Destination;
+    public string Source;
     public override void Interact()
     {
-        throw new System.NotImplementedException();
+        MyNetworkManager.camefrom = Source;
+        if (players_inside== NetworkManager.singleton.numPlayers) {
+            NetworkManager.singleton.ServerChangeScene(Destination);
+        }
     }
 
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    protected override void OnTriggerEnter2D(Collider2D collision)
-    {
-        base.OnTriggerEnter2D(collision);
-    }
+    
 }
