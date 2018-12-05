@@ -1,0 +1,39 @@
+fileFormatVersion: 2
+guid: 234e72022d4f63c45a13443aa7c82d28
+ScriptedImporter:
+  fileIDToRecycleName:
+    100000: _MapPrfab/Second asteroid
+    100002: "_MapPrfab/Second asteroid/\u0421\u043B\u043E\u0439 \u0442\u0430\u0439\u043B\u043E\u0432
+      1"
+    400000: _MapPrfab/Second asteroid/Transform
+    400002: "_MapPrfab/Second asteroid/\u0421\u043B\u043E\u0439 \u0442\u0430\u0439\u043B\u043E\u0432
+      1/Transform"
+    11400000: _MapPrfab/Second asteroid/MonoBehaviour-SuperTiled2Unity.SuperMap
+    11400002: _MapPrfab/Second asteroid/MonoBehaviour-SuperTiled2Unity.SuperCustomProperties
+    11400004: "_MapPrfab/Second asteroid/\u0421\u043B\u043E\u0439 \u0442\u0430\u0439\u043B\u043E\u0432
+      1/MonoBehaviour-SuperTiled2Unity.SuperTileLayer"
+    11400006: "_MapPrfab/Second asteroid/\u0421\u043B\u043E\u0439 \u0442\u0430\u0439\u043B\u043E\u0432
+      1/MonoBehaviour-SuperTiled2Unity.SuperCustomProperties"
+    11400008: _superAsset
+    100100000: _MapPrfab
+    2569400265252428796: _MapPrfab/Second asteroid/Grid
+    3664157343022684176: "_MapPrfab/Second asteroid/\u0421\u043B\u043E\u0439 \u0442\u0430\u0439\u043B\u043E\u0432
+      1/TilemapRenderer"
+    8195094279510102542: "_MapPrfab/Second asteroid/\u0421\u043B\u043E\u0439 \u0442\u0430\u0439\u043B\u043E\u0432
+      1/Tilemap"
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 1fa25d03934ea624a82bf2fcee6f0873, type: 3}
+  errors: []
+  warnings: []
+  missingSortingLayers: []
+  missingLayers: []
+  pixelsPerUnit: 8
+  edgesPerEllipse: 32
+  tilesAsObjects: 0
+  importSorting: 0
+  isIsometric: 0
+  customImporterClassName: 
+  internalTilesets: []

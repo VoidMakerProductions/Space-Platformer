@@ -132,6 +132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 95476775578624124}
   Destination: InsideHomeAsteroid
+  Source: 
 --- !u!212 &212381330107536502
 SpriteRenderer:
   m_ObjectHideFlags: 1

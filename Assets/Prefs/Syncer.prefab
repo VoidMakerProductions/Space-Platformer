@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1820330106589760}
+  m_IsPrefabAsset: 1
+--- !u!1 &1820330106589760
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4326526414469636}
+  - component: {fileID: 114779742985499424}
+  m_Layer: 0
+  m_Name: Syncer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4326526414469636
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1820330106589760}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -9.915426, y: -18.936523, z: 0.06423344}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114779742985499424
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1820330106589760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df825ca2fa61acb46a8d202fdf77bbbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bar: {fileID: 0}
+  singlplayer: 0
+  Gateway: TheVeryStart
+  registeredPrefabs:
+  - {fileID: 1401862846183510, guid: 612d34b9e128b6d4d8572674f9e342ff, type: 2}
+  - {fileID: 1580458230322678, guid: ca8a1ea432aa3b043b7448a2c8287a63, type: 2}
+  - {fileID: 1205083001285454, guid: 09356890c391a7345bf1f529bfd4bc88, type: 2}
+  - {fileID: 1982264746817008, guid: 66fddf75ad6c10a4f8e3f0b5cd599da5, type: 2}
+  - {fileID: 1588373177206316, guid: a035035b73b7bb9428e48efae396d707, type: 2}
+  - {fileID: 1330521798184414, guid: 5881474d868a7e14a8a1f33f964a91fb, type: 2}
+  playerPrefab: {fileID: 1580458230322678, guid: ca8a1ea432aa3b043b7448a2c8287a63,
+    type: 2}

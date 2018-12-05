@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - ground
+  - spacewarp
   layers:
   - Default
   - TransparentFX
@@ -42,6 +43,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 2841854439
+    locked: 0
   - name: Obstacles
     uniqueID: 74149661
     locked: 0
@@ -50,4 +54,7 @@ TagManager:
     locked: 0
   - name: UI
     uniqueID: 2542010449
+    locked: 0
+  - name: OnGround
+    uniqueID: 1739702749
     locked: 0

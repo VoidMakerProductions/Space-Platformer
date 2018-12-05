@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: deab8834167763140961da57d349aeab, type: 3}
+  m_Name: Asteroid
+  m_EditorClassIdentifier: 
+  Transfers:
+  - color: {r: 0, g: 0, b: 0, a: 1}
+    back: {fileID: 0}
+    fore: {fileID: 0}
+  - color: {r: 0.49411765, g: 0.14509805, b: 0.3254902, a: 1}
+    back: {fileID: 11400000, guid: 7a1565a21b5ac0c47bdd523c84845093, type: 2}
+    fore: {fileID: 0}
+  - color: {r: 0.67058825, g: 0.32156864, b: 0.21176471, a: 1}
+    back: {fileID: 11400000, guid: 7a1565a21b5ac0c47bdd523c84845093, type: 2}
+    fore: {fileID: 11400000, guid: 6c745eb17d5396b4ca18e90a62dd0b40, type: 2}
+  - color: {r: 1, g: 0, b: 0.3019608, a: 1}
+    back: {fileID: 11400000, guid: 7a1565a21b5ac0c47bdd523c84845093, type: 2}
+    fore: {fileID: 11400000, guid: 87c7819489fa05a498e4b05072002a9e, type: 2}
+  blueprint: {fileID: 2800000, guid: 25a17ca480d0a2647878bf0940fa932d, type: 3}
+  offset: {x: -45, y: 0, z: 0}
+  background: {fileID: 8195094281318018304, guid: b6585e9c98dbd05479c016abc3bf6b96,
+    type: 2}
+  foreground: {fileID: 8195094282016338660, guid: 98ebb7c0ce9dde34b8fe8ef087bc1978,
+    type: 2}

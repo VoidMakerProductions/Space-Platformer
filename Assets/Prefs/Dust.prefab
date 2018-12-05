@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212574621674008850}
   - component: {fileID: 95074363739638176}
   - component: {fileID: 114525484730862048}
-  - component: {fileID: 114534549577853612}
+  - component: {fileID: 114263229785453724}
   m_Layer: 0
   m_Name: Dust
   m_TagString: Untagged
@@ -61,6 +61,24 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114263229785453724
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1588373177206316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68af996971190ea42a944c84015d6dc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 0
+  type: 4
+  self: {fileID: 0}
+  isPlayer: 0
+  createMsgSent: 0
+  SyncVariation: 0
+  PositionSendRate: 0
 --- !u!114 &114525484730862048
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -73,38 +91,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifetime: 0.5
---- !u!114 &114534549577853612
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1588373177206316}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 160
-    i1: 53
-    i2: 3
-    i3: 91
-    i4: 115
-    i5: 183
-    i6: 187
-    i7: 148
-    i8: 40
-    i9: 228
-    i10: 142
-    i11: 250
-    i12: 227
-    i13: 150
-    i14: 215
-    i15: 7
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
 --- !u!212 &212574621674008850
 SpriteRenderer:
   m_ObjectHideFlags: 1

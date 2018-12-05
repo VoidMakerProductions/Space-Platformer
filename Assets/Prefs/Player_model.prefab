@@ -68,12 +68,12 @@ GameObject:
   - component: {fileID: 4769023249282644}
   - component: {fileID: 212782295987930626}
   - component: {fileID: 114333380327631192}
-  - component: {fileID: 114454262390802570}
   - component: {fileID: 50558227157769818}
-  - component: {fileID: 114659190712425428}
   - component: {fileID: 58309775126619340}
   - component: {fileID: 247938658376708588}
   - component: {fileID: 82860657829083996}
+  - component: {fileID: 114373498929138410}
+  - component: {fileID: 114723185300782990}
   m_Layer: 0
   m_Name: Player_model
   m_TagString: Player
@@ -372,9 +372,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0a2a2359ada7cc4ab5b5ad3a09b046b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerid: 
+  fRight: 0
+  fLeft: 0
+  fUp: 0
+  fDown: 0
+  assumedPosition: {x: 0, y: 0}
   self: {fileID: 50558227157769818}
-  thrust: 10
-  cooldown: 0.1
+  thrust: 30
+  cooldown: 1
   FireCooldown: 0.5
   aimSpeed: 2
   projectile: {fileID: 50014057765579264, guid: 66fddf75ad6c10a4f8e3f0b5cd599da5,
@@ -391,7 +397,12 @@ MonoBehaviour:
     type: 2}
   emitter: {fileID: 82860657829083996}
   emitter2: {fileID: 82556842013300016}
---- !u!114 &114454262390802570
+  CollectedAspirin: 0
+  bootConsumptionPerSecond: 1
+  batteryLockTime: 3
+  energyRestorePerSecond: 2
+  maxEnergy: 26
+--- !u!114 &114373498929138410
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -399,31 +410,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1580458230322678}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 68af996971190ea42a944c84015d6dc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 202
-    i1: 138
-    i2: 30
-    i3: 164
-    i4: 50
-    i5: 170
-    i6: 59
-    i7: 4
-    i8: 59
-    i9: 116
-    i10: 72
-    i11: 162
-    i12: 200
-    i13: 40
-    i14: 122
-    i15: 99
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 1
---- !u!114 &114659190712425428
+  id: 0
+  type: 1
+  self: {fileID: 50558227157769818}
+  isPlayer: 1
+  createMsgSent: 0
+  SyncVariation: 0
+  PositionSendRate: 7
+--- !u!114 &114723185300782990
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -431,19 +428,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1580458230322678}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 62506246636a6394494340d6f35cd57b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TransformSyncMode: 2
-  m_SendInterval: 0.1
-  m_SyncRotationAxis: 3
-  m_RotationSyncCompression: 0
-  m_SyncSpin: 0
-  m_MovementTheshold: 0.001
-  m_VelocityThreshold: 0.0001
-  m_SnapThreshold: 5
-  m_InterpolateRotation: 1
-  m_InterpolateMovement: 1
+  maxHP: 10
+  HP: 0
 --- !u!120 &120009406162861994
 LineRenderer:
   m_ObjectHideFlags: 1
@@ -477,7 +466,7 @@ LineRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1711324155
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
@@ -569,7 +558,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1711324155
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: a2bda33fd792e6a40a7b7cfe164ef592, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

@@ -9,6 +9,8 @@ public class ButtonSpriteChange : MonoBehaviour {
     public Sprite sp1;
     public Sprite sp2;
     public ButtonHandler bh;
+    public float DoubleClickInterval = 0.5f;
+    float prevClick = -100f;
 	// Use this for initialization
 	void Start () {
 		
@@ -20,14 +22,22 @@ public class ButtonSpriteChange : MonoBehaviour {
 	}
 
     public void Toggle() {
-        bool b = Target.sprite == sp1;
-        Target.sprite = b ? sp2 : sp1;
-        if (b)
+        if (Time.time - prevClick <= DoubleClickInterval)
         {
-            bh.SetDownState();
+            bool b = Target.sprite == sp1;
+            Target.sprite = b ? sp2 : sp1;
+            if (b)
+            {
+                bh.SetDownState();
+            }
+            else
+            {
+                bh.SetUpState();
+            }
         }
         else {
-            bh.SetUpState();
+            prevClick = Time.time;
         }
+        
     }
 }
