@@ -14,8 +14,13 @@ public class GPGSyncInstance : MonoBehaviour
     bool sendDestroyMsg = true;
     public bool isPlayer;
     public bool createMsgSent = false;
+    public HealthKeeper healthKeeper;
+    int prevHP;
+    PlayerControl pc;
+    Participant me;
     public SVariations SyncVariation;
-    [Range(0f,10f)]public float PositionSendRate;
+    [Range(0f,20f)]public float PositionSendRate;
+   
     float nextSend;
     public enum SVariations {
         Position,
@@ -29,27 +34,43 @@ public class GPGSyncInstance : MonoBehaviour
             enabled = false;
             return;
         }
-        
-        Debug.Log("Somehow getting past singlplayer");
+
+        if (healthKeeper) {
+            prevHP = healthKeeper.maxHP;
+            healthKeeper.SetHP(prevHP);
+        }
+            
         if (!isPlayer)
             Syncer.Instance.Add(this);
+        
         if (createMsgSent) return;
-        byte[] message = new byte[11];
+        gameObject.name = GetInstanceID().ToString();
+        byte[] message = new byte[17];
         message[0] = (byte)Syncer.MessageType.Instantiate;
-        message[1] = (byte)id;
-        int i = 2;
+        int i = 1;
+        foreach (byte b in BitConverter.GetBytes(GetInstanceID()))
+        {
+            message[i] = b;
+            i++;//1-4
+        }
         foreach (byte b in BitConverter.GetBytes(transform.position.x))
         {
             message[i] = b;
-            i++;
+            i++;//5-8
         }
         foreach (byte b in BitConverter.GetBytes(transform.position.y))
         {
             message[i] = b;
-            i++;
+            i++;//9-12
         }
-        message[10] = (byte)type;
+        foreach (byte b in BitConverter.GetBytes(type))
+        {
+            message[i] = b;
+            i++;//13-16
+        }
         PlayGamesPlatform.Instance.RealTime.SendMessageToAll(true, message);
+        pc = GetComponent<PlayerControl>();
+        me = PlayGamesPlatform.Instance.RealTime.GetSelf();
     }
 
     // Update is called once per frame
@@ -59,14 +80,42 @@ public class GPGSyncInstance : MonoBehaviour
             enabled = false;
             return;
         }
+        if (healthKeeper) {
+            if (prevHP != healthKeeper.GetHP()) {
+                prevHP = healthKeeper.GetHP();
+                bool cancel = false;
+                if (pc)
+                    cancel = pc.playerid != me.ParticipantId;
+                if (!cancel) {
+                    byte[] message = new byte[10];
+                    message[0] = (byte)Syncer.MessageType.HPUpdate;
+                    int i = 1;
+                    foreach (byte b in BitConverter.GetBytes(Convert.ToInt32(name)))
+                    {
+                        message[i] = b;
+                        i++;
+                    }
+                    foreach (byte b in BitConverter.GetBytes(healthKeeper.GetHP()))
+                    {
+                        message[i] = b;
+                        i++;
+                    }
+                }
+            }
+        }
         if (self != null&&(SyncVariation==SVariations.Velocity||SyncVariation==SVariations.Both)) {
             if (self.velocity != prevVelocity)
             {
+                
                 prevVelocity = self.velocity;
-                byte[] message = new byte[10];
+                byte[] message = new byte[14];
                 message[0] = (byte)Syncer.MessageType.VelocitySync;
-                message[1] = (byte)id;
-                int i = 2;
+                int i = 1;
+                foreach (byte b in BitConverter.GetBytes(Convert.ToInt32(name)))
+                {
+                    message[i] = b;
+                    i++;
+                }
                 foreach (byte b in BitConverter.GetBytes(self.velocity.x))
                 {
                     message[i] = b;
@@ -83,27 +132,81 @@ public class GPGSyncInstance : MonoBehaviour
         }
         if(SyncVariation!=SVariations.Velocity&&PositionSendRate>0){
             if (Time.time > nextSend) {
-                nextSend = Time.time + (1f / PositionSendRate);
-                byte[] message = new byte[10];
-                message[0] = (byte)Syncer.MessageType.PosSync;
-                message[1] = (byte)id;
-                int i = 2;
-                foreach (byte b in BitConverter.GetBytes(transform.position.x))
-                {
-                    message[i] = b;
-                    i++;
-                }
-                foreach (byte b in BitConverter.GetBytes(transform.position.y))
-                {
-                    message[i] = b;
-                    i++;
+                bool cancel = false;
+                if (pc)
+                    cancel = pc.playerid != me.ParticipantId;
+                if (!cancel) {
+                    nextSend = Time.time + (1f / PositionSendRate);
+                    byte[] message = new byte[14];
+                    message[0] = (byte)Syncer.MessageType.PosSync;
+                    int i = 1;
+                    foreach (byte b in BitConverter.GetBytes(Convert.ToInt32(name)))
+                    {
+                        message[i] = b;
+                        i++;
+                    }
+                    foreach (byte b in BitConverter.GetBytes(transform.position.x))
+                    {
+                        message[i] = b;
+                        i++;
+                    }
+                    foreach (byte b in BitConverter.GetBytes(transform.position.y))
+                    {
+                        message[i] = b;
+                        i++;
+                    }
+
+                    PlayGamesPlatform.Instance.RealTime.SendMessageToAll(false, message);
+                    message = new byte[10];
+                    message[0] = (byte)Syncer.MessageType.RotSync;
+                    i = 1;
+                    foreach (byte b in BitConverter.GetBytes(GetInstanceID()))
+                    {
+                        message[i] = b;
+                        i++;
+                    }
+                    foreach (byte b in BitConverter.GetBytes(transform.rotation.eulerAngles.z))
+                    {
+                        message[i] = b;
+                        i++;
+                    }
+                    PlayGamesPlatform.Instance.RealTime.SendMessageToAll(false, message);
+                    Debug.Log("(Nebullarix) RTM msg sent: RotSync");
                 }
                 
-                PlayGamesPlatform.Instance.RealTime.SendMessageToAll(false, message);
-                Debug.Log("(Nebullarix) RTM msg sent: PosSync");
             }
         }
         
+    }
+
+    public void SetHP(int HP) {
+        prevHP = HP;
+        if (healthKeeper)
+            healthKeeper.SetHP(HP);
+    }
+    public void SetRot(float angle) {
+        transform.rotation = Quaternion.Euler(0, 0, angle);
+    }
+    public void SendPlayerSettings(int spriteIndex,char gender) {
+        byte[] msg = new byte[16];
+        msg[0] = (byte)Syncer.MessageType.PlayerSettings;
+        int i = 1;
+        foreach (byte b in BitConverter.GetBytes(Convert.ToInt32(name)))
+        {
+            msg[i] = b;
+            i++;
+        }
+        foreach (byte b in BitConverter.GetBytes(spriteIndex))
+        {
+            msg[i] = b;
+            i++;
+        }
+        foreach (byte b in BitConverter.GetBytes(gender))
+        {
+            msg[i] = b;
+            i++;
+        }
+        PlayGamesPlatform.Instance.RealTime.SendMessageToAll(true, msg);
     }
     public void Destroy(bool sendMessage = false) {
         sendDestroyMsg = sendMessage;
@@ -119,10 +222,17 @@ public class GPGSyncInstance : MonoBehaviour
     }
     private void OnDestroy()
     {
+        if (Syncer.Instance.singlplayer)
+            return;
         if (sendDestroyMsg) {
-            byte[] message = new byte[2];
+            byte[] message = new byte[8];
             message[0] = (byte)Syncer.MessageType.Destroy;
-            message[1] = (byte)id;
+            int i = 1;
+            foreach (byte b in BitConverter.GetBytes(Convert.ToInt32(name)))
+            {
+                message[i] = b;
+                i++;
+            }
             PlayGamesPlatform.Instance.RealTime.SendMessageToAll(true, message);
         }
         

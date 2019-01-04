@@ -24,6 +24,8 @@ GameObject:
   - component: {fileID: 61304907212524298}
   - component: {fileID: 114616924178863290}
   - component: {fileID: 114101119568076408}
+  - component: {fileID: 95411338381118850}
+  - component: {fileID: 114494373077734722}
   m_Layer: 8
   m_Name: Boost_effect
   m_TagString: Untagged
@@ -89,6 +91,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0
+--- !u!95 &95411338381118850
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1330521798184414}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5efec13e0513ee04eb46926097e85355, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114101119568076408
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -105,8 +125,28 @@ MonoBehaviour:
   self: {fileID: 50688073983920614}
   isPlayer: 0
   createMsgSent: 0
+  healthKeeper: {fileID: 0}
   SyncVariation: 0
   PositionSendRate: 0
+--- !u!114 &114494373077734722
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1330521798184414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68af996971190ea42a944c84015d6dc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 0
+  type: 5
+  self: {fileID: 0}
+  isPlayer: 0
+  createMsgSent: 0
+  healthKeeper: {fileID: 0}
+  SyncVariation: 0
+  PositionSendRate: 1
 --- !u!114 &114616924178863290
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -118,7 +158,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a5d28e52e5d7a4096b42bbd08ad726, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifetime: 5
+  lifetime: 0.25
+  damage: 0
+  TargetTag: None
 --- !u!212 &212651614159287530
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -152,7 +194,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1711324155
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: 9873cedb10a093e4593de8b8d868b839, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

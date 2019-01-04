@@ -6,9 +6,13 @@ using System.Collections.Generic;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi.Multiplayer;
 using System;
+using GooglePlayGames.BasicApi;
 
 public class Syncer : MonoBehaviour,RealTimeMultiplayerListener
 {
+    public AudioClip[] soundtracks;
+    public int[] stIndexes;
+    int stIndex;
     public Image bar;
     public bool singlplayer;
     public string Gateway="TheVeryStart";
@@ -16,9 +20,10 @@ public class Syncer : MonoBehaviour,RealTimeMultiplayerListener
     public GameObject playerPrefab;
     public Dictionary<int, GPGSyncInstance> insts = new Dictionary<int, GPGSyncInstance>();
     public Dictionary<string, int> players = new Dictionary<string, int>();
+    public WeaponType[] weaponTypes;
     List<string> participantIDs = new List<string>();
     int i = 0;
-    
+    List<GameObject> pcs;
     public static Syncer Instance { get; private set; }
 
     // Use this for initialization
@@ -28,7 +33,19 @@ public class Syncer : MonoBehaviour,RealTimeMultiplayerListener
         Instance = this;
         DontDestroyOnLoad(this);
         SceneManager.sceneLoaded += OnLevelFinishedLoading;
-        
+        pcs = new List<GameObject>();
+        PlayGamesClientConfiguration config = new
+            PlayGamesClientConfiguration.Builder()
+            .EnableSavedGames()
+            .Build();
+
+        // Enable debugging output (recommended)
+        PlayGamesPlatform.DebugLogEnabled = true;
+
+        // Initialize and activate the platform
+        PlayGamesPlatform.InitializeInstance(config);
+
+        PlayGamesPlatform.Activate();
     }
 
     public static Vector2 pixelPerfectVector(Vector2 vector, float pixelsPerUnit = 8f) {
@@ -41,13 +58,18 @@ public class Syncer : MonoBehaviour,RealTimeMultiplayerListener
     private void OnLevelFinishedLoading(Scene scene,LoadSceneMode mode)
     {
         i = 0;
-        Debug.Log(scene.buildIndex);
+        if (stIndexes[scene.buildIndex] != stIndex) {
+            stIndex = stIndexes[scene.buildIndex];
+            BackgroundMusic.clip = soundtracks[stIndex];
+            BackgroundMusic.Play();
+        }
+        
         insts = new Dictionary<int, GPGSyncInstance>();
         
         if (scene.buildIndex > 1) {
             //CreatePlayers();
             if (!singlplayer) {
-
+                pcs.Clear();
                 CreateLocalPlayer();
             }
             else {
@@ -62,6 +84,20 @@ public class Syncer : MonoBehaviour,RealTimeMultiplayerListener
         insts[id] = null;
     }
 
+
+    public Transform GetRandomTrackTarget() {
+        List<GameObject> alive = new List<GameObject>();
+        foreach (GameObject pc in pcs) {
+            if (pc.GetComponent<HealthKeeper>().GetHP() > 0) {
+                alive.Add(pc);
+            }
+        }
+        if (alive.Count < 1) {
+            return null;
+        }
+        return alive.ToArray()[UnityEngine.Random.Range(0, alive.Count)].transform;
+
+    }
 
     void CreatePlayers() {
         Transform spawn = GameObject.Find(Gateway).transform;
@@ -96,7 +132,7 @@ public class Syncer : MonoBehaviour,RealTimeMultiplayerListener
         GameObject go = Instantiate(playerPrefab, pos, Quaternion.identity);
         go.GetComponent<PlayerControl>().playerid = id;
         GPGSyncInstance gPG = go.GetComponent<GPGSyncInstance>();
-        
+        pcs.Add(go);
         players[id] = Add(gPG);
 
 
@@ -137,7 +173,14 @@ public class Syncer : MonoBehaviour,RealTimeMultiplayerListener
         }
         
     }
+    public bool CheckIfAllPlayersDead() {
+        foreach (GameObject p in pcs) {
+            if (p.GetComponent<HealthKeeper>().GetHP() > 0)
+                return false;
+        }
 
+        return true;
+    }
     public void OnRoomSetupProgress(float percent)
     {
         /*if(bar==null)
@@ -185,50 +228,86 @@ public class Syncer : MonoBehaviour,RealTimeMultiplayerListener
     {
         MessageType mt = (MessageType)(int)data[0];
         Debug.Log("(Nebullarix), RTM received: "+mt+"len "+data.GetLength(0));
-        int objectId;
+        int objectId,sprIndex,len;
+        char g;
         float x, y;
+        string s;
         GameObject go;
         try
         {
             switch (mt)
             {
+                case MessageType.PlayerSettings:
+                    objectId = BitConverter.ToInt32(data,1);
+                    sprIndex = BitConverter.ToInt32(data, 5);
+                    g = BitConverter.ToChar(data,9);
+                    go = GameObject.Find(objectId.ToString());
+                    go.GetComponent<PlayerControl>().gender = g;
+                    go.GetComponent<PlayerControl>().SetSprite(sprIndex);
+                    pcs.Add(go);
+                    break;
                 case MessageType.AddPlayer:
-                    objectId = (int)data[1];
-                    int len = (int)data[2];
-                    string s = System.Text.Encoding.ASCII.GetString(data, 3, len);
+                    objectId = BitConverter.ToInt32(data, 1);
+                    len = BitConverter.ToInt32(data, 5);
+                    s = System.Text.Encoding.ASCII.GetString(data, 9, len);
                     players[s] = objectId;
-                    Debug.Log("(Nebullarix) playeradd: " + s+" objectid: "+objectId);
+                    Debug.Log("(Nebullarix) playeradd: " + s + " objectid: " + objectId);
+                    break;
+                case MessageType.Talking:
+                    
+                    len = BitConverter.ToInt32(data, 1);
+                    s = System.Text.Encoding.UTF8.GetString(data, 5, len);
+                    Time.timeScale = s == "" ? 1f : 0f;
+                    Camera.main.GetComponent<DialControl>().SetText(s);
+                    Debug.Log("(Nebullarix) TalkingText: " + s );
                     break;
                 case MessageType.Destroy:
-                    objectId = (int)data[1];
+                    objectId = BitConverter.ToInt32(data, 1);
                     Debug.Log("(Nebullarix) destroyId: " + objectId);
-                    insts[objectId].Destroy();
+                    go = GameObject.Find(objectId.ToString());
+                    go.GetComponent<GPGSyncInstance>().Destroy();
                     break;
                 case MessageType.Instantiate:
-                    objectId = (int)data[1];
-                    int objectType = (int)data[10];
+                    objectId = BitConverter.ToInt32(data, 1);
+                    int objectType = BitConverter.ToInt32(data, 13);
                     x = BitConverter.ToSingle(data, 2);
                     y = BitConverter.ToSingle(data, 6);
                     Vector3 pos = new Vector3(x, y);
                     Debug.Log("(Nebullarix) createId: " + objectId + " at " + pos + "type " + objectType);
                     go = Instantiate(registeredPrefabs[objectType], pos, Quaternion.identity);
                     go.GetComponent<GPGSyncInstance>().createMsgSent = true;
+                    go.name = objectId.ToString();
                     break;
                 case MessageType.VelocitySync:
-                    objectId = (int)data[1];
-                    x = BitConverter.ToSingle(data, 2);
-                    y = BitConverter.ToSingle(data, 6);
+                    objectId = BitConverter.ToInt32(data, 1);
+                    x = BitConverter.ToSingle(data, 5);
+                    y = BitConverter.ToSingle(data, 9);
                     Vector2 newVel = new Vector2(x, y);
-                    Debug.Log("(Nebullarix) SyncVelId: " + objectId + "newVel " + newVel);
-                    insts[objectId].SetVelocity(newVel);
+                    Debug.Log("(Nebullarix) SyncVelId: " + objectId + " newVel " + newVel);
+                    go = GameObject.Find(objectId.ToString());
+                    go.GetComponent<GPGSyncInstance>().SetVelocity(newVel);
                     break;
                 case MessageType.PosSync:
-                    objectId = (int)data[1];
-                    x = BitConverter.ToSingle(data, 2);
-                    y = BitConverter.ToSingle(data, 6);
+                    objectId = BitConverter.ToInt32(data, 1);
+                    x = BitConverter.ToSingle(data, 5);
+                    y = BitConverter.ToSingle(data, 9);
                     Vector3 newPos = new Vector3(x, y);
-                    insts[objectId].SetVelocity(newPos);
-                    Debug.Log("(Nebullarix) SyncPosId: " + objectId + "newPos " + newPos);
+                    go = GameObject.Find(objectId.ToString());
+                    go.GetComponent<GPGSyncInstance>().SetPosition(newPos);
+                    Debug.Log("(Nebullarix) SyncPosId: " + objectId + " newPos " + newPos);
+                    break;
+                case MessageType.RotSync:
+                    objectId = BitConverter.ToInt32(data, 1);
+                    x = BitConverter.ToSingle(data, 5);                  
+                    go = GameObject.Find(objectId.ToString());
+                    go.GetComponent<GPGSyncInstance>().SetRot(x);
+                    Debug.Log("(Nebullarix) SyncRotId: " + objectId + " angle:  " + x);
+                    break;
+                case MessageType.HPUpdate:
+                    objectId = BitConverter.ToInt32(data, 1);
+                    go = GameObject.Find(objectId.ToString());
+                    sprIndex =  BitConverter.ToInt32(data, 5);
+                    go.GetComponent<GPGSyncInstance>().SetHP(sprIndex);
                     break;
             }
         }
@@ -244,8 +323,14 @@ public class Syncer : MonoBehaviour,RealTimeMultiplayerListener
         AddPlayer,
         VelocitySync,
         PosSync,
+        RotSync,
         Instantiate,
-        Destroy
+        Destroy,
+        ChildSyncPos,
+        ChildSyncRot,
+        PlayerSettings,
+        HPUpdate,
+        Talking
     }
 }
 

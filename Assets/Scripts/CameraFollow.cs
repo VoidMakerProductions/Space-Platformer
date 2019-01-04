@@ -6,34 +6,55 @@ public class CameraFollow : MonoBehaviour
     public int depth = -20;
     public float speed = 0.1f;
     public float SnapTreshold = 10f;
+    public bool LockOn = false;
+    public float maxWait=1f;
+    float pursueTime=0f;
     public float ignoreRadius;
     Rigidbody2D targetRB;
     public float MaxTargetVelocity;
     bool caughtUp;
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
+        if (pursueTime == 0f && targetRB.velocity.sqrMagnitude < (0.25f * 0.25f)) {
+            pursueTime = Time.time+maxWait;
+            //Debug.Log(pursueTime);
+        }
+        if (targetRB.velocity.sqrMagnitude > (0.25f * 0.25f)) {
+            pursueTime = 0f;
+        }
         
+        float sqrDist = ((Vector2)playerTransform.position - (Vector2)transform.position).sqrMagnitude;
         if (playerTransform != null)
         {
-            if (((Vector2)playerTransform.position - (Vector2)transform.position).sqrMagnitude < SnapTreshold && targetRB.velocity.sqrMagnitude < (MaxTargetVelocity * MaxTargetVelocity))
+            if (sqrDist < SnapTreshold && targetRB.velocity.sqrMagnitude < (MaxTargetVelocity * MaxTargetVelocity) && !LockOn && !Ptime)
             {
-                if (((Vector2)playerTransform.position - (Vector2)transform.position).sqrMagnitude > (ignoreRadius * ignoreRadius))
-                    
-                    transform.position = Vector3.Lerp(transform.position, playerTransform.position, speed) + new Vector3(0, 0, depth);
-            } else if (targetRB.velocity.sqrMagnitude >= (MaxTargetVelocity * MaxTargetVelocity)&&!caughtUp) {
                 
-                transform.position = Vector3.Lerp(transform.position, playerTransform.position, speed) + new Vector3(0, 0, depth);
-                if (((Vector2)playerTransform.position - (Vector2)transform.position).sqrMagnitude < (0.125*0.125))
+                if (sqrDist > (ignoreRadius * ignoreRadius) && targetRB.velocity.sqrMagnitude < (MaxTargetVelocity * MaxTargetVelocity) )
+                {
+                    Vector3 intendedPosition = transform.position + (Vector3)((Vector2)(playerTransform.position - transform.position)).normalized * ignoreRadius + new Vector3(0, 0, depth);
+                    transform.position = Vector3.Lerp(transform.position, intendedPosition, speed * 4);
+                }
+                else
+                    caughtUp = false;
+            }
+            else if ((targetRB.velocity.sqrMagnitude >= (MaxTargetVelocity * MaxTargetVelocity) ||Ptime)&& !caughtUp)
+            {
+                //Debug.Log("Moving Fast or Waiting Long");
+                float multiplier = Ptime ? 2f : (targetRB.velocity.sqrMagnitude / (MaxTargetVelocity * MaxTargetVelocity));
+                transform.position = Vector3.Lerp(transform.position, playerTransform.position, speed *multiplier ) + new Vector3(0, 0, depth);
+                if (sqrDist < (1f))
                 {
 
                     caughtUp = true;
                 }
-                else {
+                else
+                {
                     caughtUp = false;
                 }
             }
-            else {
+            else
+            {
                 transform.position = playerTransform.position + new Vector3(0, 0, depth);
             }
             
@@ -44,7 +65,9 @@ public class CameraFollow : MonoBehaviour
 
         
     }
-
+    bool Ptime { get {
+            return pursueTime > 0 && Time.time >= pursueTime;
+        } }
     public void setTarget(Transform target)
     {
         playerTransform = target;

@@ -120,6 +120,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114779742985499424, guid: 635231b174ef5a14688f190f29762edd,
+        type: 2}
+      propertyPath: weaponTypes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4326526414469636, guid: 635231b174ef5a14688f190f29762edd, type: 2}
       propertyPath: m_LocalPosition.x
       value: -9.915426
@@ -285,7 +290,7 @@ AudioSource:
   rolloffMode: 0
   BypassEffects: 0
   BypassListenerEffects: 0
-  BypassReverbZones: 0
+  BypassReverbZones: 1
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:

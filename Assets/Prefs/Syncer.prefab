@@ -51,6 +51,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df825ca2fa61acb46a8d202fdf77bbbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundtracks:
+  - {fileID: 8300000, guid: 6348e19f2d5051b42b9b1e734a128ab3, type: 3}
+  - {fileID: 8300000, guid: f3a3eb34fad595a46a701d166c1e41a4, type: 3}
+  stIndexes: 000000000000000001000000
   bar: {fileID: 0}
   singlplayer: 0
   Gateway: TheVeryStart
@@ -61,5 +65,8 @@ MonoBehaviour:
   - {fileID: 1982264746817008, guid: 66fddf75ad6c10a4f8e3f0b5cd599da5, type: 2}
   - {fileID: 1588373177206316, guid: a035035b73b7bb9428e48efae396d707, type: 2}
   - {fileID: 1330521798184414, guid: 5881474d868a7e14a8a1f33f964a91fb, type: 2}
+  - {fileID: 1856362809127992, guid: 40e940c1fb1e9304fa3d0094e94552bc, type: 2}
   playerPrefab: {fileID: 1580458230322678, guid: ca8a1ea432aa3b043b7448a2c8287a63,
     type: 2}
+  weaponTypes:
+  - {fileID: 11400000, guid: 28a9588351752ac40bc4bf6aa392a98a, type: 2}

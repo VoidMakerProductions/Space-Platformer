@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 114010932150200088}
   - component: {fileID: 114855667521987926}
   - component: {fileID: 114207925287118174}
+  - component: {fileID: 114085233931714612}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -180,6 +181,19 @@ MonoBehaviour:
   coeff: 0.000625
   halfXT: 1
   halfYT: 1
+--- !u!114 &114085233931714612
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1219622584240810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2d755f94c909274a85cc3d40341bc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  window: {fileID: 0}
+  text: {fileID: 0}
 --- !u!114 &114161412654933736
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -193,10 +207,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 0}
   depth: -10
-  speed: 0.05
-  SnapTreshold: 40
-  ignoreRadius: 3.2
-  MaxTargetVelocity: 2.3
+  speed: 0.025
+  SnapTreshold: 16
+  LockOn: 0
+  maxWait: 1
+  ignoreRadius: 2.5
+  MaxTargetVelocity: 1.8
 --- !u!114 &114207925287118174
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -209,10 +225,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bar: {fileID: 0}
+  whiteline: {fileID: 21300000, guid: ba90cfcea724811439314348dd6f6fef, type: 3}
+  whiteDuration: 0.2
   enbar: {fileID: 0}
-  target: {fileID: 0}
-  maxWidth: 0
-  mixelsInPixel: 0
+  MoneyCounter: {fileID: 0}
 --- !u!114 &114855667521987926
 MonoBehaviour:
   m_ObjectHideFlags: 1

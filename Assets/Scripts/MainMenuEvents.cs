@@ -12,30 +12,56 @@ public class MainMenuEvents : MonoBehaviour
     public Button StartButton;
     public Button joinBtn;
     public Button AchButton;
+    public Button mgen;
+    public Button fgen;
     // Use this for initialization
     void Start()
     {
-        PlayGamesClientConfiguration config = new
-            PlayGamesClientConfiguration.Builder()
-            .EnableSavedGames()
-            .Build();
 
-        // Enable debugging output (recommended)
-        PlayGamesPlatform.DebugLogEnabled = true;
         
-        // Initialize and activate the platform
-        PlayGamesPlatform.InitializeInstance(config);
-        
-        PlayGamesPlatform.Activate();
         // Try silent sign-in (second parameter is isSilent)
         if (PlayerPrefs.HasKey("username"))
             PlayGamesPlatform.Instance.Authenticate(SignInCallback, true);
+        if (!PlayerPrefs.HasKey("gender"))
+        {
+            PlayerPrefs.SetString("gender", "m");
+            mgen.interactable = false;
+            fgen.interactable = true;
+
+        }
+        else {
+            switch (PlayerPrefs.GetString("gender")) {
+                case "m":
+                    mgen.interactable = false;
+                    fgen.interactable = true;
+                    break;
+                case "f":
+                    mgen.interactable = true;
+                    fgen.interactable = false;
+                    break;
+            }
+        }
+        if (!PlayerPrefs.HasKey("language"))
+        {
+            PlayerPrefs.SetString("language","ru");
+        }
+        if (!PlayerPrefs.HasKey("playerSprite")) {
+            PlayerPrefs.SetInt("playerSprite", 0);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
+    public void SetPlayerGender(string g) {
+        PlayerPrefs.SetString("gender", g);
+        switch (g) {
+            case "m":
+                mgen.interactable = false;
+                fgen.interactable = true;
+                break;
+            case "f":
+                mgen.interactable = true;
+                fgen.interactable = false;
+                break;
+        }
     }
     public void Single() {
         Syncer.Instance.singlplayer = true;

@@ -6,6 +6,8 @@ TagManager:
   tags:
   - ground
   - spacewarp
+  - Monster
+  - None
   layers:
   - Default
   - TransparentFX

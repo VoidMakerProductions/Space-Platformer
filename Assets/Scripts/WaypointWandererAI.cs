@@ -14,6 +14,7 @@ public class WaypointWandererAI : MonoBehaviour
     public Rotation rotation;
     float depart = 0;
     public Animator animator;
+    public HealthKeeper healthKeeper;
     public enum Rotation {
         None,
         NinetyDegLock,
@@ -23,6 +24,11 @@ public class WaypointWandererAI : MonoBehaviour
     void Start()
     {
         self = GetComponent<Rigidbody2D>();
+        if (healthKeeper) {
+            healthKeeper.onDeath += () => {
+                Destroy(gameObject);
+            };
+        }
     }
 
     // Update is called once per frame

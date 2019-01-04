@@ -9,7 +9,7 @@ public abstract class Interactable : MonoBehaviour
     public Animator animator;
     protected int players_inside = 0;
     protected List<GameObject> insiders = new List<GameObject>();
-    public abstract void Interact();
+    public abstract void Interact(PlayerControl actor);
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
@@ -21,7 +21,11 @@ public abstract class Interactable : MonoBehaviour
             }
         }
     }
-
+    protected virtual void OnTriggerStay2D(Collider2D collision) {
+        if (collision.gameObject.CompareTag("Player")) {
+            collision.GetComponent<PlayerControl>().interactable = this;
+        }
+    }
     protected virtual void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
